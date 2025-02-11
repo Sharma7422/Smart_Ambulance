@@ -1,0 +1,63 @@
+  
+  <nav class="navbar">
+    <!-- Navbar Logo on the Left -->
+    <a class="navbar-brand" href="#">
+      <img src="/Assets/logo1.jpeg" alt="Logo">
+    </a>
+  
+    <!-- Navbar Elements on the Right -->
+    <ul class="navbar-nav">
+      <!-- Home -->
+      <li class="nav-item">
+        <!-- <a class="nav-link active" href="#">Home</a> -->
+        <div class="item nav-link active" onclick="location.href='/ambulance'">Home</div>
+      </li>
+  
+      <!-- About -->
+      <li class="nav-item">
+        <!-- <a class="nav-link" href="/aboutUs">About</a> -->
+        <div class="item nav-link" onclick="location.href='/aboutUs'">About<span>&nbsp;US</span></div>
+      </li>
+  
+      <!-- Services Dropdown -->
+      <li class="nav-item dropdown">
+        <!-- <a class="nav-link dropdown-toggle" href="#">Services</a> -->
+        <div class="item nav-link dropdown-toggle" onclick="location.href='/service'">Services</div>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Normal Ambulance</a></li>
+          <li><a class="dropdown-item" href="#">Oxygen Ambulance</a></li>
+          <li><a class="dropdown-item" href="#">ICU Ventilator Ambulance</a></li>
+          <li><a class="dropdown-item" href="#">Surgery Ambulance</a></li>
+          <li><a class="dropdown-item" href="#">Shok Wahan </a></li>
+        </ul>
+      </li>
+  
+      <!-- Contact Us -->
+      <li class="nav-item">
+        <!-- <a class="nav-link" href="#">Contact Us</a> -->
+        <div class="item nav-link" onclick="location.href='/contact'">Contact<span>&nbsp;Us</span></div>
+      </li>
+    </ul>
+  </nav>
+  
+  
+  
+  <script>
+    // Dropdown toggle functionality
+    document.querySelector('.dropdown-toggle').addEventListener('click', function (e) {
+      e.preventDefault();
+      const dropdownMenu = this.nextElementSibling;
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+  
+    function showNav(){
+        document.getElementById("barNav").style.display="block";
+        document.getElementById("bar").setAttribute("onclick","hideNav()");
+    }
+    function hideNav(){
+        document.getElementById("barNav").style.display="none";
+        document.getElementById("bar").setAttribute("onclick","showNav()");
+    }
+  </script>
+  

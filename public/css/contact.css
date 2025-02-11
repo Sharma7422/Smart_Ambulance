@@ -1,0 +1,214 @@
+
+* {
+    box-sizing: border-box;
+}
+
+
+.complete{
+    background-color: rgba(244, 199, 9, 0.333);
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+  
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 50px 150px;
+  }
+  
+  .left-section {
+    flex: 1;
+    padding: 20px;
+    text-align: left;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .left-section h1 {
+    /* font-size: 3rem; */
+    /* color: #333; */
+    margin-bottom: 20px;
+    line-height: 80px;
+    text-transform: capitalize;
+    color: #000;
+    font-family: gt-super, serif !important;
+    font-size: 4.4rem !important;
+    font-weight: 700 !important;
+    margin-block-start: .5rem;
+    margin-block-end: 1rem;
+  }
+  
+  .left-section p {
+    /* font-size: 1.2rem; */
+    color: #666;
+    margin-bottom: 20px;
+    margin-block-start: .5rem;
+    margin-block-end: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    background-color: #333;
+    color: #ffc107;
+    padding: 10px 20px;
+    /* font-size: 1rem; */
+    border: none;
+    border-radius: 250px 250px 250px 250px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: capitalize;
+    box-shadow: 0 4px 34px 0 rgba(242, 118, 64, .35);
+    padding: 18px 34px;
+  }
+  
+  .download-btn i {
+    margin-left: 10px;
+  }
+  
+  .right-section {
+    flex: 1;
+    padding: 30px;
+    background-color: rgb(244, 199, 9);
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    height: 450px;
+  }
+  
+  .right-section h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 36px;
+    line-height: 42px;
+   
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-height{
+    height: 50px;
+  }
+  
+  .form-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    
+    /* line-height: 38px; */
+    /* padding: 60px 20px 20px; */
+  }
+  
+  input, textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  input[type="text"], input[type="email"] {
+    flex: 1;
+  }
+  
+  textarea {
+    resize: none;
+  }
+  
+  button {
+    padding: 10px 15px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  
+  button:hover {
+    background-color: #444;
+  }
+
+  .help-support {
+    /* background-color: #fff; */
+    /* width: 150% !important; Full width */
+    padding: 50px; /* Padding inside */
+    text-align: center; /* Center text */
+    color: #333; /* Text color */
+    box-sizing: border-box; /* Includes padding in width */
+}
+
+  
+  .help-support h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .help-support p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+  
+  .support-details {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .support-item {
+    flex: 1;
+    max-width: 300px;
+    text-align: center;
+  }
+  
+  .support-item img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+  }
+  
+  .support-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .support-item p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  .icon-circle {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #000; /* Icon color */
+    font-size: 35px; /* Icon size */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for design */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover effect */
+  }
+  
+  .icon-circle:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  }
+  
+  
+  
+  
+  
+  
+  

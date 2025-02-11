@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Registration</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2>Admin Registration</h2>
+    <form action="/admin/register" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required />
+        
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required />
+        
+        <label for="role">Role:</label>
+        <input type="text" name="role" id="role" />
+        
+        <button type="submit">Register</button>
+      </form>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value || 'admin';
+
+      const response = await fetch('/admin/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, role })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message);
+        window.location.href = '/admin/login'; // Redirect to login page
+      } else {
+        alert(data.message);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<% layout('/services/layouts/boilerplate') %>
+<head>
+    <link rel="stylesheet" href="/CSS/contact.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="complete">
+    <div class="container">
+      <!-- Left Section -->
+      <div class="left-section">
+        <h1>You Can <br>Find Us Here</h1>
+        <p>Find help for your queries here:</p>
+        <button class="download-btn">
+          <span>Book Now</span> <i class="android-icon">📱</i>
+        </button>
+      </div>
+  
+      <!-- Right Section -->
+      <div class="right-section">
+        <h2>Ask us anything.</h2>
+        <form id="contact-form">
+          <div class="form-group">
+            <input type="text" class="form-height"  id="name" placeholder="Name" required>
+            <input type="text" class="form-height"  id="mobile" placeholder="Mobile Number" required>
+          </div>
+          <input type="email" class="form-height"  id="email" placeholder="Email" required>
+          <textarea id="message" placeholder="Message" rows="5" required></textarea>
+          <button type="submit" class="form-height" >Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="help-support">
+      <h2>Help & Support</h2>
+      <p>
+        We’re here to help! If you have any questions or need assistance, please don’t hesitate to reach out. 
+        Our support team is available 24/7 to assist you with any issues or concerns you may have. Whether 
+        you need help navigating our website, have a question about booking, or need assistance with a product 
+        or service, we’re here to help. You can contact us via email or phone. Thank you for choosing our service; 
+        we value your time.
+      </p>
+      <div class="support-details">
+        <div class="support-item ">
+          <i class="fas fa-phone  icon-circle "></i>
+          <h3>Call Us</h3>
+          <p>+91-8008280020</p>
+        </div>
+        <div class="support-item">
+          <i class="fas fa-map-marker-alt   icon-circle "></i>
+          <h3>Location</h3>
+          <p>
+            91, Parvati Marg, Hanuman Nagar Extension,<br>
+            Paschim Vihar, Vaishali Nagar,<br>
+            Jaipur, Rajasthan 302021
+          </p>
+        </div>
+        <div class="support-item">
+          <i class="fas fa-envelope  icon-circle "></i>
+          <h3>Email Us</h3>
+          <p>info@goaid.in</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+  
+    <script>
+        document.getElementById("contact-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const mobile = document.getElementById("mobile").value;
+  const email = document.getElementById("email").value;
+  const message = document.getElementById("message").value;
+
+  alert(`Thank you for your message, ${name}! We will contact you shortly.`);
+  // Reset form
+  document.getElementById("contact-form").reset();
+});
+
+    </script>
+  </body>

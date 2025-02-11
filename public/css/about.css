@@ -1,0 +1,127 @@
+
+.about{
+    
+    background-color: whitesmoke;
+    display: flex;
+    margin-bottom: 60px;
+    margin-top: 60px;
+}
+
+
+.ambulance{
+   float: left;
+}
+  
+  h1{
+    align-items: center;
+    
+  }
+
+
+  .title_main{
+    color: red;
+    text-align: center;
+  }
+  .title{
+    color:red
+
+
+  }
+
+  .about_main{
+display: flex;
+background-color: rgb(146, 143, 143);
+margin-top: 60px;
+  }
+
+
+  .about_line{
+    margin-top: 150px;
+  }
+  .about_photo{
+    float: left;
+    margin-left: 100px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .about_line h2{
+    font-size: 30px;
+  }
+
+
+  
+  .gallery1 {
+    margin: 20px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 280px;
+    border-radius: 15px;
+    height: 380px;
+
+  }
+
+  .gallery1:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+  
+  .gallery2 {
+    margin: 20px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 280px;
+    height: 380px;
+    border-radius: 15px;
+
+  }
+  
+  
+
+  .gallery2:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+
+  div.gallery3 {
+    margin: 20px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 280px;
+    border-radius: 15px;
+    height: 380px;
+
+
+  }
+  
+  
+  
+  .gallery3:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+
+  .gallery1{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.gallery2{
+margin-left: 40px;
+margin-right: 40px;
+}
+.gallery3{
+margin-left: 40px;
+margin-right: 40px;
+}
+
+
+  .gallery{
+    display:flex;
+  }
+  
+  div.desc {
+    padding: 5px;
+    text-align: center;
+  }
+
+
