@@ -14,7 +14,7 @@
             Emergency Ambulance Service in Rajasthan offers the best ambulance service in Rajasthan because it offers all those features and specialties that cater to all types of needs of any patient for their medical emergency! Dial 8008280020 & Ambulance will reach you within 10 minutes!
           </p>
           <p>Don’t Just Wait! Book Us Now!</p>
-          <a href="/ambulance/book" class="btn btn-primary"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp; Book Now</a>
+          <a href="/book-ambulance" class="btn btn-primary"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp; Book Now</a>
           <a href="tel:8000546428" class="btn btn-secondary"><i class="fas fa-phone-alt"></i>&nbsp;Call: 8000546428</a>
         </div>
         <!-- Ambulance Image -->
@@ -29,7 +29,7 @@
 <section class="home1-section">
   <h1>Choose The Best Ambulance Service In Jaipur</h1>
   <div class="home1-content">
-    <img src="assets/Ambulance_image.webp" alt="Ambulance" class="ambulance-img1">
+    <img src="assets/ambulance4.jpeg" alt="Ambulance" class="ambulance-img1">
     <div class="home1-text">
       <p>
         Emergency Ambulance System is proud to provide exceptional Ambulance Service in Rajasthan, ensuring that residents have access
@@ -38,7 +38,7 @@
       </p>
       <p>
         Our focus on delivering fast ambulance services ensures that critical patients receive immediate attention
-        during emergencies. Trust GoAid for comprehensive emergency medical solutions tailored to your needs.
+        during emergencies. Trust Smart Ambulance Services for comprehensive emergency medical solutions tailored to your needs.
       </p>
     </div>
   </div>
@@ -135,19 +135,19 @@
           <p>Book an Ambulance or Emergency Service Anytime, Anywhere.</p>
           <div class="steps">
             <!-- Step 1 -->
-            <div class="step-card">
+            <div class="step-card  ">
               <div class="step-number">1</div>
               <h4 class="step-title">Choose your Ambulance</h4>
               <p class="step-desc">Select the type of ambulance you need for your situation.</p>
             </div>
             <!-- Step 2 -->
-            <div class="step-card">
+            <div class="step-card ">
               <div class="step-number">2</div>
               <h4 class="step-title">Find Nearest Ambulance</h4>
               <p class="step-desc">Locate the closest ambulance to your location instantly.</p>
             </div>
              <!-- Step 3 -->
-             <div class="step-card">
+             <div class="step-card" >
               <div class="step-number">3</div>
               <h4 class="step-title">Get an Ambulance</h4>
               <p class="step-desc">Locate the closest ambulance to your location instantly.</p>
@@ -162,5 +162,81 @@
   <!-- </div> -->
 </section>
 
-  
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Fade-in and slide animation for section titles
+    gsap.from(".home-section h1, .home1-section h1, .why-section h1, .how-it-works-section h2", {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      stagger: 0.3,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".home-section",
+        start: "top 80%",
+        toggleActions: "play none none none",
+      }
+    });
+
+    // Fade-in for paragraphs
+    gsap.from(".text-content p, .home1-text p, .why-section p", {
+      opacity: 0,
+      y: 30,
+      duration: 1.2,
+      stagger: 0.3,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".text-content",
+        start: "top 85%",
+        toggleActions: "play none none none",
+      }
+    });
+
+    // Ambulance image sliding effect
+    gsap.from(".ambulance-img, .ambulance-img1", {
+      opacity: 0,
+      x: 100,
+      duration: 1.5,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".ambulance-img",
+        start: "top 80%",
+        toggleActions: "play none none none",
+      }
+    });
+
+    // Feature cards appearing with a pop effect
+    gsap.from(".feature-card", {
+      opacity: 0,
+      scale: 0.8,
+      duration: 1.5,
+      stagger: 0.2,
+      ease: "elastic.out(1, 0.5)",
+      scrollTrigger: {
+        trigger: ".features-grid",
+        start: "top 85%",
+        toggleActions: "play none none none",
+      }
+    });
+
+    // Steps section animation (How It Works)
+    gsap.from(".step-card", {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      stagger: 0.3,
+      ease: "back.out(1.7)",
+      scrollTrigger: {
+        trigger: ".steps",
+        start: "top 90%",
+        toggleActions: "play none none none",
+      }
+    });
+
+  });
+</script>
+
+
 </body>

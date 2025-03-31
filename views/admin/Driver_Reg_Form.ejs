@@ -1,0 +1,135 @@
+<% layout('/services/layouts/boilerplate') %>
+<head>
+    <style>
+        /* Form Container */
+        .form-container {
+            background: #f9f9f9;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            transition: transform 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #000;
+            font-weight: bold;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        /* Input and button styles */
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            width: 100%;
+            background-color: #f2f2f2;
+            color: #333;
+            border: 1px solid #ddd;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #5d3ebc;
+            outline: none;
+            box-shadow: 0 0 10px rgba(93, 62, 188, 0.3);
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 18px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+        }
+
+        /* Labels */
+        label {
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 30px;
+            }
+
+            .btn-primary {
+                font-size: 16px;
+            }
+
+            .form-container h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Driver Registration</h2>
+        <form action="/admin/register-driver" method="POST" >
+        <!-- <form action="/register-driver" method="POST"> -->
+            <div class="mb-3">
+                <label for="driverName">Full Name</label>
+                <input type="text" class="form-control" id="driverName" name="driverName" required>
+            </div>
+        
+            <div class="mb-3">
+                <label for="vehicleNumber">Vehicle Number</label>
+                <input type="text" class="form-control" id="vehicleNumber" name="vehicleNumber" required>
+            </div>
+        
+            <div class="mb-3">
+                <label for="driverNumber">Contact Number</label>
+                <input type="tel" class="form-control" id="driverNumber" name="driverNumber" required>
+            </div>
+        
+            <div class="mb-3">
+                <label for="driverAddress">Address</label>
+                <input type="text" class="form-control" id="driverAddress" name="driverAddress" required>
+            </div>
+        
+            <div class="mb-3">
+                <label for="driverHospital">Hospital Name</label>
+                <input type="text" class="form-control" id="driverHospital" name="driverHospital" required>
+            </div>
+        
+            <div class="mb-3">
+                <label for="vehicleType">Vehicle Type</label>
+                <select class="form-select" id="vehicleType" name="vehicleType" required>
+                    <option value="">Select Vehicle Type</option>
+                    <option value="Basic Ambulance">Basic Ambulance</option>
+                    <option value="ICU Ambulance">ICU Ambulance</option>
+                    <option value="Air Ambulance">Air Ambulance</option>
+                    <option value="Moksh Vahan">Moksh Vahan</option> 
+                </select>
+            </div>
+        
+            <button type="submit" class="btn-primary">Register Driver</button>
+        </form>
+        
+    </div>
+</body>

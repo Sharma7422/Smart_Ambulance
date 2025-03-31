@@ -1,0 +1,41 @@
+<!-- views/admin/hospitals.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospitals List</title>
+    <link rel="stylesheet" href="/CSS/admin_hospital.css"> <!-- Add CSS file if needed -->
+</head>
+<body>
+    <h2>Registered Hospitals</h2>
+    <a href="/admin/register-hospital" class="btn btn-primary">Register New Hospital</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Hospital Name</th>
+                <th>Address</th>
+                <th>Contact</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% hospitals.forEach(hospital => { %>
+                <tr>
+                    <td><%= hospital.hospitalName %></td>
+                    <td><%= hospital.hospitalAddress %></td>
+                    <td><%= hospital.hospitalPhone %></td>
+                    <td>
+                        <a href="/admin/hospitals/<%= hospital._id %>" class="btn">View Details</a>
+                        <!-- Delete Form -->
+                    <form action="/admin/delete-hospital/<%= hospital._id %>" method="POST" style="display:inline;">
+                        <button type="submit" class="btn" style=" border: none;" onclick="return confirm('Are you sure you want to delete this hospital?')">Delete Details</button>
+                    </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    
+</body>
+</html>

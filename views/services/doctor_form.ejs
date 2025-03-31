@@ -1,0 +1,164 @@
+<% layout('/services/layouts/boilerplate') %>
+<head>
+    <style>
+        /* Form Container */
+        .form-container {
+            background: #f9f9f9;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            transition: transform 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #000;
+            font-weight: bold;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        /* Input and button styles */
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            width: 100%;
+            background-color: #f2f2f2;
+            color: #333;
+            border: 1px solid #ddd;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #5d3ebc;
+            outline: none;
+            box-shadow: 0 0 10px rgba(93, 62, 188, 0.3);
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 18px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+        }
+
+        /* Labels */
+        label {
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 30px;
+            }
+
+            .btn-primary {
+                font-size: 16px;
+            }
+
+            .form-container h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Doctor Registration</h2>
+    <form action="/api/doctors/register" method="POST" enctype="multipart/form-data">
+
+        <!-- Doctor's Personal Information -->
+        <div class="mb-3">
+            <label for="doctorName">Full Name</label>
+            <input type="text" class="form-control" id="doctorName" name="doctorName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="doctorEmail">Email Address</label>
+            <input type="email" class="form-control" id="doctorEmail" name="doctorEmail" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="doctorPhone">Contact Number</label>
+            <input type="tel" class="form-control" id="doctorPhone" name="doctorPhone" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="doctorAddress">Address</label>
+            <input type="text" class="form-control" id="doctorAddress" name="doctorAddress" required>
+        </div>
+
+        <!-- Specialization -->
+        <div class="mb-3">
+            <label for="specialization">Specialization</label>
+            <select class="form-select" id="specialization" name="specialization" required>
+                <option value="" disabled selected>Select Specialization</option>
+                <option value="General Physician">General Physician</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="Orthopedic">Orthopedic</option>
+                <option value="Pulmonologist">Pulmonologist</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <!-- Experience -->
+        <div class="mb-3">
+            <label for="experience">Years of Experience</label>
+            <input type="number" class="form-control" id="experience" name="experience" min="0" required>
+        </div>
+
+        <!-- Availability -->
+        <div class="mb-3">
+            <label for="availability">Availability for Virtual Assistance</label>
+            <select class="form-select" id="availability" name="availability" required>
+                <option value="Morning">Morning (8 AM - 12 PM)</option>
+                <option value="Afternoon">Afternoon (12 PM - 4 PM)</option>
+                <option value="Evening">Evening (4 PM - 8 PM)</option>
+                <option value="Night">Night (8 PM - 12 AM)</option>
+                <option value="Anytime">Anytime</option>
+            </select>
+        </div>
+
+        <!-- Upload Medical License -->
+        <div class="mb-3">
+            <label for="medicalLicense">Upload Medical License / ID</label>
+            <input type="file" class="form-control" id="medicalLicense" name="medicalLicense" accept=".pdf, .jpg, .png" required>
+        </div>
+
+        <!-- Emergency Contact -->
+        <div class="mb-3">
+            <label for="emergencyContact">Emergency Contact Number</label>
+            <input type="tel" class="form-control" id="emergencyContact" name="emergencyContact" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Register Doctor</button>
+    </form>
+</div>
+
+</body>

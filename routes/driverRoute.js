@@ -1,17 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { createDriver, getAllDrivers, getDriverById, updateDriverLocation } = require("../controllers/driverController");
+const driverController = require("../controllers/driverController");
 
-// Create Driver
-router.post("/", createDriver);
+// ✅ Route to render the Driver Registration Form
+router.get("/register-driver", (req, res) => {
+    res.render("services/Driver_Reg_Form"); // This will render 'views/Driver_Reg_Form.ejs'
+});
 
-// Get all drivers
-router.get("/", getAllDrivers);
-
-// Get driver by ID
-router.get("/:id", getDriverById);
-
-// Update driver's location
-router.put("/:id/location", updateDriverLocation);
+// ✅ Driver API Routes
+router.post('/register-driver', driverController.registerDriver);
+router.get("/drivers", driverController.getAllDrivers);
+router.get("/drivers/:id", driverController.getDriverById);
+router.delete("/drivers/:id", driverController.deleteDriver);
 
 module.exports = router;

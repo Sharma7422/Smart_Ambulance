@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Details - Admin</title>
+    <link rel="stylesheet" href="/CSS/admin_hospital.css">
+</head>
+<body>
+    <h1>Ambulance Details</h1>
+
+    <!-- 🔍 Search & Filter Form -->
+    <form action="/admin/ambulances" method="GET">
+        <label for="hospital">Filter by Hospital:</label>
+        <input type="text" name="hospital" id="hospital" value="<%= hospital || '' %>">
+
+        <label for="type">Filter by Type:</label>
+        <input type="text" name="type" id="type" value="<%= type || '' %>">
+
+        <button type="submit">Search</button>
+        <a href="/admin/ambulances"><button type="button">Reset</button></a>
+    </form>
+
+    <!-- 🚑 Ambulance Table -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Driver Name</th>
+                <th>Vehicle Number</th>
+                <th>Contact</th>
+                <th>Hospital</th>
+                <th>Vehicle Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% ambulances.forEach((ambulance, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= ambulance.driverName %></td>
+                    <td><%= ambulance.vehicleNumber %></td>
+                    <td><%= ambulance.driverNumber %></td>
+                    <td><%= ambulance.driverHospital %></td>
+                    <td><%= ambulance.vehicleType %></td>
+                    <td>
+                        <a href="/admin/edit-ambulance/<%= ambulance._id %>">✏️ Edit</a> | 
+                        <a href="/admin/delete-ambulance/<%= ambulance._id %>" onclick="return confirm('Are you sure?')">🗑️ Delete</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+</html>

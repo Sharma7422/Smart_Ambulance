@@ -6,14 +6,26 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const multer = require('multer');
 const User = require('./models/User'); // Adjust the path based on where your user model is located
+const cors = require("cors");
+const fs = require("fs");
+// const socketIo = require('socket.io');
+if (!fs.existsSync("./uploads")) {
+    fs.mkdirSync("./uploads");
+}
+const methodOverride = require('method-override');
+const cookieParser = require("cookie-parser");
+// const path = require("path");
 
 // const { twilioPhoneNumber, accountSid, authToken } = require('./config/twilio'); // Twilio credentials
 
 // Route imports
 const userRoute = require("./routes/userRoute");
 const driverRoute = require("./routes/driverRoute");
-const bookingRoute = require("./routes/bookingRoute");
+const bookingRoutes = require("./routes/bookingRoute");
 const adminRoute = require("./routes/adminRoute");
+const doctorRoutes = require("./routes/doctorRoutes");
+const hospitalRoute = require("./routes/hospitalRoute");
+const adminDashboard = require("./routes/adminDashboard");
 
 const app = express();
 
@@ -32,26 +44,39 @@ mongoose.connect(MONGO_URL, {
     console.log("Error connecting to DB:", err);
   });
 
+
 // Middleware Setup
+app.use(cors());
+app.use(cookieParser()); 
 app.use(bodyParser.json());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine('ejs', ejsMate);
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, "public")));
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
-const upload = multer({ dest: 'uploads/' }); // Multer config for file uploads
+// app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
+const upload = multer({ dest: 'uploads/' });
+ // Multer config for file uploads
 // const client = new twilio(accountSid, authToken)
 
 // Set the port (either from the environment or 8080)
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3456;
 
 // Routes
-app.use("/users", userRoute);  // User related routes
-app.use("/drivers", driverRoute);  // Driver related routes
-app.use("/bookings", bookingRoute);  // Booking related routes
+// app.use("/users", userRoute);  // User related routes
+app.use("/api/users", userRoute); // API for bookings
+app.use("/api", driverRoute); // Driver related routes
+app.use("/api", bookingRoutes);;  // Booking related routes
 app.use("/admin", adminRoute);  // Admin related routes
+app.use("/api/doctors", doctorRoutes); //Doctor related route
+app.use("/api", hospitalRoute); //Hospital related route
+app.use("/admin", adminDashboard);  //Dashboard related route
+// app.use("/api", bookingRoute);
+
+
 
 // Home Route (accessible to all)
 app.get("/", (req, res) => {
@@ -94,33 +119,46 @@ app.get("/service",(req,res)=>{
   res.render("services/services.ejs");
 });
 
+// Services Types Routes
+
+// Normal Ambulance
+app.get("/service_Normal",(req,res)=>{
+  res.render("services/Normal_Ambulance.ejs");
+});
+
+// Oxygen Ambulance
+app.get("/service_Oxygen",(req,res)=>{
+  res.render("services/Oxygen_Ambulance.ejs");
+});
+
+// ICU Ambulance
+app.get("/service_ICU",(req,res)=>{
+  res.render("services/ICU_Ambulance.ejs");
+});
+
+// DeadBody Ambulance
+app.get("/service_DeadBody",(req,res)=>{
+  res.render("services/DeadBody_Ambulance.ejs");
+});
+
 // ContactUs route
 app.get("/contact",(req,res)=>{
   res.render("services/contact.ejs");
 });
 
-
-app.get("/ambulance/book", async (req, res) => {
-  try {
-    res.render("services/Booking_Form.ejs");
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-});
+// Booking Ambulance
+app.get("/book-ambulance", (req, res) => res.render("services/Booking_Form.ejs"));
 
 
 // Route to handle ambulance booking form submission
-app.post('/book-ambulance', async (req, res) => {
+app.post("/book-ambulance", async (req, res) => {
   try {
-    // Extract the data from the request body
     const { userName, userPhone, ambulanceType, hospitalName, pickupAddress, destinationAddress } = req.body;
 
-    // Validate the data
     if (!userName || !userPhone || !ambulanceType || !hospitalName || !pickupAddress || !destinationAddress) {
-      return res.status(400).send("All fields are required.");
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Create a new user
     const newUser = new User({
       userName,
       userPhone,
@@ -130,17 +168,17 @@ app.post('/book-ambulance', async (req, res) => {
       destinationAddress,
     });
 
-    // Save the user to the database
     await newUser.save();
 
-    // Send success response
-    // res.status(201).json({ message: "Ambulance booking confirmed!", user: newUser });
-    res.redirect("/ambulance"); 
+    // ✅ Return JSON response instead of redirecting
+    res.json({ success: true, redirectUrl: "/ambulance" });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Internal Server Error");
+    console.error("Error booking ambulance:", err);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 });
+
+
 
 // app.post("/book-ambulance", upload.none(), async (req, res) => {
 //   const { userName, userPhone, ambulanceType, hospitalName, pickupAddress, destinationAddress } = req.body;
@@ -184,10 +222,13 @@ app.post('/book-ambulance', async (req, res) => {
 // });
 
 // API routes
-app.use('/bookings', bookingRoute);  // Prefix all routes with /bookings
+// app.use('/bookings', bookingRoute);  // Prefix all routes with /bookings
 
 // Start server
 // const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+// Rahul Sharma

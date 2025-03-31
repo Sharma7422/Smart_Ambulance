@@ -45,6 +45,7 @@
   .sgallery1 img {
     width: 100%;
     height: 150px;
+    border-radius: 10px;
   }
 
   .sgallery2 {
@@ -59,6 +60,7 @@
   .sgallery2 img {
     width: 100%;
     height: 150px;
+    border-radius: 10px;
   }
 
   .sgallery2:hover{
@@ -79,6 +81,7 @@
   div.sgallery3 img {
     width: 100%;
     height: 150px;
+    border-radius: 10px;
   }
 
   .sgallery3:hover{

@@ -1,114 +1,82 @@
-const mongoose = require("mongoose");
+const Driver = require("../models/Driver");
+const User = require("../models/User");
 const Booking = require("../models/Booking");
-const NodeGeocoder = require("node-geocoder");
-
-// Configure the geocoder
-const geocoder = NodeGeocoder({
-  provider: "openstreetmap", // Options: 'google', 'mapbox', etc.
-});
-
-/**
- * Create a new booking
- * Handles geocoding for pickup and drop addresses and stores the information in the database
- */
 exports.createBooking = async (req, res) => {
-  const { userId, driverId, hospitalName, ambulanceType, pickupAddress, dropAddress } = req.body;
+    try {
+        const { userId, hospitalName, ambulanceType, pickupAddress, dropAddress } = req.body;
 
-  if (!userId || !driverId || !hospitalName || !ambulanceType || !pickupAddress || !dropAddress) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
+        const newBooking = new Booking({
+            userId,
+            hospitalName,
+            ambulanceType,
+            pickupAddress,
+            dropAddress,
+            status: "Pending" // Default status
+        });
 
-  try {
-    // Debugging: Log the userId and driverId to verify
-    console.log("Received userId:", userId);
-    console.log("Received driverId:", driverId);
-
-    // Validate ObjectId format
-    if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(driverId)) {
-      return res.status(400).json({ message: "Invalid userId or driverId format" });
+        await newBooking.save();
+        res.status(201).json({ message: "Booking created successfully", booking: newBooking });
+    } catch (error) {
+        res.status(500).json({ message: "Error creating booking", error });
     }
-
-    // Convert to ObjectId
-    const userObjectId = mongoose.Types.ObjectId(userId);
-    const driverObjectId = mongoose.Types.ObjectId(driverId);
-
-    // Geocode pickup and drop addresses
-    const pickupLocation = await geocoder.geocode(pickupAddress);
-    const dropLocation = await geocoder.geocode(dropAddress);
-
-    if (!pickupLocation.length || !dropLocation.length) {
-      return res.status(400).json({ message: "Invalid pickup or drop address" });
-    }
-
-    // Create a new booking document
-    const newBooking = new Booking({
-      userId: userObjectId,
-      driverId: driverObjectId,
-      hospitalName,
-      ambulanceType,
-      pickupAddress,
-      pickupCoordinates: {
-        type: "Point",
-        coordinates: [pickupLocation[0].longitude, pickupLocation[0].latitude], // [longitude, latitude]
-      },
-      dropAddress,
-      dropCoordinates: {
-        type: "Point",
-        coordinates: [dropLocation[0].longitude, dropLocation[0].latitude], // [longitude, latitude]
-      },
-      status: "pending",
-    });
-
-    // Save booking to the database
-    await newBooking.save();
-    res.status(201).json({ message: "Booking created successfully", booking: newBooking });
-  } catch (err) {
-    console.error("Error creating booking:", err);
-    res.status(500).json({ message: "Error creating booking", error: err.message || err });
-  }
 };
 
+// Get all bookings
+exports.getAllBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find()
+            .populate("userId", "name email") // ✅ Populate user details (Only name & email)
+            .populate("driverId", "name"); // ✅ Populate driver details
 
+        const drivers = await Driver.find({}, "name"); // Fetch only name field
 
-
-/**
- * Get booking by ID
- */
-exports.getBookingById = async (req, res) => {
-  try {
-    const booking = await Booking.findById(req.params.id);
-    if (!booking) {
-      return res.status(404).json({ message: "Booking not found" });
+        res.render("admin/ambulanceRequests", { bookings, drivers });
+    } catch (error) {
+        console.error("Error fetching bookings:", error);
+        res.status(500).send("Error loading ambulance requests page.");
     }
-    res.status(200).json(booking);
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching booking", error: err });
-  }
 };
 
-/**
- * Update booking status
- */
-exports.updateBookingStatus = async (req, res) => {
-  const { status } = req.body;
+// Assign driver to a booking
+exports.assignDriver = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { driverId } = req.body;
 
-  if (!status) {
-    return res.status(400).json({ message: "Status is required" });
-  }
+        const booking = await Booking.findByIdAndUpdate(id, { driverId, status: "Assigned" }, { new: true });
+        if (!booking) return res.status(404).send("Booking not found");
 
-  try {
-    const booking = await Booking.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true } // Return the updated document
-    );
-
-    if (!booking) {
-      return res.status(404).json({ message: "Booking not found" });
+        res.redirect("/admin/ambulance-requests");
+    } catch (error) {
+        console.error("Error assigning driver:", error);
+        res.status(500).send("Error assigning driver");
     }
+};
 
-    res.status(200).json({ message: "Booking status updated", booking });
-  } catch (err) {
-    res.status(500).json({ message: "Error updating booking status", error: err });
-  }
+// Update booking status
+exports.updateStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        const booking = await Booking.findByIdAndUpdate(id, { status }, { new: true });
+        if (!booking) return res.status(404).send("Booking not found");
+
+        res.redirect("/admin/ambulance-requests");
+    } catch (error) {
+        console.error("Error updating status:", error);
+        res.status(500).send("Error updating status");
+    }
+};
+
+// Delete a booking request
+exports.deleteBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Booking.findByIdAndDelete(id);
+        res.status(200).json({ message: "Booking deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting booking:", error);
+        res.status(500).json({ message: "Error deleting booking", error });
+    }
 };

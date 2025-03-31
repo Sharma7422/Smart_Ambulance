@@ -1,0 +1,44 @@
+<!-- views/admin/hospital_details.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Details</title>
+    <link rel="stylesheet" href="/CSS/admin_hospital.css"> <!-- Add CSS file if needed -->
+</head>
+<body>
+    <h2>Drivers List</h2>
+    <a href="/admin/register-driver" class="btn btn-primary">Add New Driver</a>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Driver Name</th>
+                <th>Vehicle Number</th>
+                <th>Contact</th>
+                <th>Hospital</th>
+                <th>Vehicle Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% drivers.forEach((driver, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= driver.driverName %></td>
+                    <td><%= driver.vehicleNumber %></td>
+                    <td><%= driver.driverNumber %></td>
+                    <td><%= driver.driverHospital %></td>
+                    <td><%= driver.vehicleType %></td>
+                    <td>
+                        <a href="/admin/delete-driver/<%= driver._id %>" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Requests</title>
+    <link rel="stylesheet" href="/CSS/admin_hospital.css">
+</head>
+<body>
+
+    <h2>Ambulance Requests</h2>
+
+    <!-- Filter by Status -->
+    <label for="filterStatus">Filter by Status:</label>
+    <select id="filterStatus" onchange="filterRequests()">
+        <option value="">All</option>
+        <option value="Pending">Pending</option>
+        <option value="Assigned">Assigned</option>
+        <option value="Completed">Completed</option>
+    </select>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Hospital</th>
+                <th>Ambulance Type</th>
+                <th>Pickup</th>
+                <th>Destination</th>
+                <th>Status</th>
+                <th>Driver</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="requestsTable">
+            <% bookings.forEach(booking => { %>
+                <tr data-status="<%= booking.status %>">
+                    <td><%= booking.userId ? booking.userId.name : "Unknown" %></td>
+                    <td><%= booking.hospitalName %></td>
+                    <td><%= booking.ambulanceType %></td>
+                    <td><%= booking.pickupAddress %></td>
+                    <td><%= booking.dropAddress %></td>
+                    <td><%= booking.status %></td>
+                    <td>
+                        <% if (booking.driverId) { %>
+                            <%= booking.driverId.name %>
+                        <% } else { %>
+                            <form action="/admin/ambulance-requests/assign/<%= booking._id %>?_method=PUT" method="POST">
+                                <select name="driverId">
+                                    <% drivers.forEach(driver => { %>
+                                        <option value="<%= driver._id %>"><%= driver.name %></option>
+                                    <% }) %>
+                                </select>
+                                <button type="submit">Assign</button>
+                            </form>
+                        <% } %>
+                    </td>
+                    <td>
+                        <form action="/admin/ambulance-requests/status/<%= booking._id %>?_method=PUT" method="POST">
+                            <select name="status">
+                                <option value="Pending" <%= booking.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                <option value="Assigned" <%= booking.status === 'Assigned' ? 'selected' : '' %>>Assigned</option>
+                                <option value="Completed" <%= booking.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+
+                        <form action="/admin/ambulance-requests/<%= booking._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure?')">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <script>
+        function filterRequests() {
+            var status = document.getElementById("filterStatus").value;
+            var rows = document.querySelectorAll("#requestsTable tr");
+
+            rows.forEach(row => {
+                if (status === "" || row.getAttribute("data-status") === status) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

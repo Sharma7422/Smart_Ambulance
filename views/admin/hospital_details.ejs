@@ -1,0 +1,147 @@
+<!-- views/admin/hospital_details.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Details</title>
+    <link rel="stylesheet" href="/CSS/admin_hospital.css"> <!-- External CSS -->
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .hospital-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin: 8px 0;
+        }
+
+        strong {
+            color: #000;
+        }
+
+        .hospital-info {
+            background: #f2f2f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .ambulance-types {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background: #007bff;
+            color: white;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hospital-container">
+    <h1>Hospital Details</h1><br><br>
+    <% if (hospital) { %>
+        <h2><i class="fas fa-hospital"></i> <%= hospital.hospitalName %></h2>
+
+        <div class="hospital-info">
+            <p><strong>📍 Address:</strong> <%= hospital.hospitalAddress %></p>
+            <p><strong>📞 Phone:</strong> <%= hospital.hospitalPhone %></p>
+            <p><strong>📧 Email:</strong> <%= hospital.hospitalEmail %></p>
+        </div>
+
+        <h3 class="ambulance-types"><i class="fas fa-ambulance"></i> Ambulance Types</h3>
+        <ul>
+            <% hospital.ambulanceTypes.forEach(type => { %>
+                <li><%= type %></li>
+            <% }) %>
+        </ul>
+
+        <div class="hospital-info">
+            <p><strong>👨‍⚕️ Number of Doctors:</strong> <%= hospital.numDoctors %></p>
+            <p><strong>🚑 Number of Ambulances:</strong> <%= hospital.numAmbulances %></p>
+            <p><strong>👨‍✈️ Number of Drivers:</strong> <%= hospital.numDrivers %></p>
+        </div>
+    <% } else { %>
+        <p>⚠️ Hospital details not found.</p>
+    <% } %>
+
+    <button class="btn"><a href="/admin/hospitals" style="color: white; text-decoration: none;">⬅️ Back to Hospitals</a></button>
+</div>
+
+</body>
+</html>

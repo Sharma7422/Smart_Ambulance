@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/CSS/dashboard.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>ADMIN NAVBAR</h2>
+        <ul>
+            <li><a href="/admin/dashboard">🏠 Dashboard</a></li>
+            <li><a href="/admin/users">👤 Users</a></li>
+            <li><a href="/admin/ambulances">🚑 Ambulances</a></li>
+            <li><a href="/admin/ambulance-requests">📋 Requests</a></li>
+            <li><a href="/admin/hospitals">🏥 Hospitals</a></li>
+            <li><a href="/admin/drivers">👨‍✈️ Drivers</a></li>
+            <button onclick="logoutAdmin()" class="logout-btn">🚪 Logout</button>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Admin Dashboard</h1>
+        <div class="stats-container">
+            <div class="stat-box stat-total">Total Ambulances <p><%= totalAmbulances %></p></div>
+            <div class="stat-box stat-requests">All Requests <p><%= totalRequests %></p></div>
+            <div class="stat-box stat-new">New Requests <p><%= newRequests %></p></div>
+            <div class="stat-box stat-assigned">Assigned Requests <p><%= assignedRequests %></p></div>
+            <div class="stat-box stat-onway">On The Way <p><%= onTheWayAmbulances %></p></div>
+            <div class="stat-box stat-picked">Patient Picked <p><%= patientPicked %></p></div>
+            <div class="stat-box stat-reached">Patient Reached <p><%= patientReached %></p></div>
+            <div class="stat-box stat-rejected">Rejected Requests <p><%= rejectedRequests %></p></div>
+        </div>
+    </div>
+
+    <script>
+        function logoutAdmin() {
+            fetch('/admin/logout', { method: 'POST' })
+                .then(response => { if (response.ok) window.location.href = "/admin/login"; })
+                .catch(error => console.error("Logout Error:", error));
+        }
+    </script>
+
+</body>
+</html>

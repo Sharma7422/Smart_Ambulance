@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { createUser, getAllUsers, getUserById } = require("../controllers/userController");
 
-// Create User (including ambulance booking and SMS notification)
+// Create User (ambulance booking with SMS notification)
 router.post("/", createUser);
 
 // Get all users

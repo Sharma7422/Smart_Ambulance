@@ -1,82 +1,69 @@
 const Driver = require("../models/Driver");
 
-// Create a new driver
-exports.createDriver = async (req, res) => {
-  const { name, phone, vehicleNumber, longitude, latitude } = req.body;
-
-  if (!name || !phone || !vehicleNumber || longitude === undefined || latitude === undefined) {
-    return res.status(400).json({ message: "Missing required fields" });
-  }
-
+// Register a new driver
+exports.registerDriver = async (req, res) => {
   try {
-    const newDriver = new Driver({
-      name,
-      phone,
-      vehicleNumber,
-      currentLocation: {
-        type: "Point",
-        coordinates: [longitude, latitude],
-      },
-    });
+      console.log("Received Data:", req.body);  // ✅ Debugging
 
-    await newDriver.save();
-    res.status(201).json({ message: "Driver created successfully", driver: newDriver });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error creating driver", error: err });
+      const { driverName, vehicleNumber, driverNumber, driverAddress, driverHospital, vehicleType } = req.body;
+      
+      if (!driverName || !vehicleNumber || !driverNumber || !driverAddress || !driverHospital || !vehicleType) {
+          return res.status(400).json({ error: "All fields are required" });
+      }
+
+      const newDriver = new Driver({
+          driverName,
+          vehicleNumber,
+          driverNumber,
+          driverAddress,
+          driverHospital,
+          vehicleType
+      });
+
+      await newDriver.save();
+      res.redirect("/drivers");
+  } catch (error) {
+      console.error("Error registering driver:", error);
+      res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
+
 // Get all drivers
 exports.getAllDrivers = async (req, res) => {
-  try {
-    const drivers = await Driver.find();
-    res.status(200).json(drivers);
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching drivers", error: err });
-  }
+    try {
+        const drivers = await Driver.find();
+        res.status(200).json(drivers);
+    } catch (error) {
+        console.error("Error fetching drivers:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
 };
 
 // Get driver by ID
 exports.getDriverById = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const driver = await Driver.findById(id);
-    if (!driver) {
-      return res.status(404).json({ message: "Driver not found" });
+    try {
+        const driver = await Driver.findById(req.params.id);
+        if (!driver) {
+            return res.status(404).json({ message: "Driver not found" });
+        }
+        res.status(200).json(driver);
+    } catch (error) {
+        console.error("Error fetching driver:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
-    res.status(200).json(driver);
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching driver", error: err });
-  }
 };
 
-// Update driver's location
-exports.updateDriverLocation = async (req, res) => {
-  const { id } = req.params;
-  const { longitude, latitude } = req.body;
-
-  if (longitude === undefined || latitude === undefined) {
-    return res.status(400).json({ message: "Missing location coordinates" });
-  }
-
-  try {
-    const updatedDriver = await Driver.findByIdAndUpdate(
-      id,
-      {
-        currentLocation: {
-          type: "Point",
-          coordinates: [longitude, latitude],
-        },
-      },
-      { new: true }
-    );
-    if (!updatedDriver) {
-      return res.status(404).json({ message: "Driver not found" });
+// Delete driver by ID
+exports.deleteDriver = async (req, res) => {
+    try {
+        const driver = await Driver.findByIdAndDelete(req.params.id);
+        if (!driver) {
+            return res.status(404).json({ message: "Driver not found" });
+        }
+        res.status(200).json({ message: "Driver deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting driver:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
-    res.status(200).json({ message: "Driver location updated", driver: updatedDriver });
-  } catch (err) {
-    res.status(500).json({ message: "Error updating driver's location", error: err });
-  }
 };

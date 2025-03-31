@@ -96,7 +96,7 @@
 
 <div class="form-container">
   <h2>Book an Ambulance</h2>
-  <form action="/book-ambulance" method="POST" class="needs-validation" novalidate>
+  <form class="needs-validation" novalidate>
     <div class="mb-3">
       <label for="userName" class="form-label">Your Name</label>
       <input type="text" class="form-control" id="userName" name="userName" required autocomplete="off">
@@ -133,6 +133,57 @@
     </div>
     <button type="submit" class="btn btn-primary">Book Ambulance</button>
   </form>
+
 </div>
+
+<script>
+ document.querySelector("form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const longitude = position.coords.longitude;
+      const latitude = position.coords.latitude;
+
+      const data = {
+        userName: document.getElementById("userName").value,
+        userPhone: document.getElementById("userPhone").value,
+        ambulanceType: document.getElementById("ambulanceType").value,
+        hospitalName: document.getElementById("hospitalName").value,
+        pickupAddress: document.getElementById("pickupAddress").value,
+        destinationAddress: document.getElementById("destinationAddress").value,
+        longitude,
+        latitude
+      };
+
+      try {
+        const response = await fetch("/book-ambulance", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        // ✅ Ensure response is JSON
+        const result = await response.json();
+
+        if (response.ok && result.redirectUrl) {
+          window.location.href = result.redirectUrl;
+        } else {
+          console.error("❌ Error:", result.message);
+        }
+      } catch (error) {
+        console.error("❌ Fetch error:", error);
+      }
+    }, (error) => {
+      console.error("❌ Location access denied:", error);
+    });
+  } else {
+    console.error("❌ Geolocation is not supported by this browser.");
+  }
+});
+
+
+</script>
+
 
 </body>

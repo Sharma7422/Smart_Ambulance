@@ -14,7 +14,7 @@ exports.registerAdmin = async (req, res) => {
   try {
     const newAdmin = new Admin({ username, password, role: role || "admin" });
     await newAdmin.save();
-    res.status(201).json({ message: "Admin registered successfully" });
+    res.redirect("/admin/login");
   } catch (err) {
     res.status(500).json({ message: "Error registering admin", error: err });
   }
@@ -23,43 +23,45 @@ exports.registerAdmin = async (req, res) => {
 // Admin Login
 exports.loginAdmin = async (req, res) => {
   const { username, password } = req.body;
-  console.log("Login Request Data:", req.body); // Debugging log
+  console.log("Login Request Data:", req.body);
 
   try {
-    // Trim username to remove extra spaces
     const trimmedUsername = username.trim();
-
-    // Find admin by username (case-sensitive)
     const admin = await Admin.findOne({ username: trimmedUsername });
 
     if (!admin) {
-      console.log("Admin not found in DB!");
-      return res.status(400).json({ message: "Invalid username or password" });
+      console.log("❌ Admin not found!");
+      return res.render("services/login", { errorMessage: "Invalid username or password" });
     }
 
-    console.log("Admin Found:", admin); // Debugging log
+    console.log("✅ Admin Found:", admin);
 
-    // Compare password using bcrypt
     const isMatch = await bcrypt.compare(password, admin.password);
-    console.log("Password Match:", isMatch); // Debugging log
+    console.log("🔑 Password Match:", isMatch);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res.render("services/login", { errorMessage: "Invalid username or password" });
     }
 
     // Generate a JWT token
     const token = jwt.sign(
       { id: admin._id, role: admin.role },
-      process.env.JWT_SECRET,  // Ensure you have JWT_SECRET in your .env file
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ message: "Login successful", token });
+    // Store token in a cookie
+    res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
+
+    // Redirect to the admin dashboard
+    res.redirect("/admin/dashboard");
   } catch (err) {
-    console.error("Login Error:", err);
-    res.status(500).json({ message: "Error logging in", error: err });
+    console.error("❌ Login Error:", err);
+    res.status(500).render("services/login", { errorMessage: "Error logging in. Please try again." });
   }
 };
+
+
 
 // Get Admin Details
 exports.getAdminDetails = async (req, res) => {

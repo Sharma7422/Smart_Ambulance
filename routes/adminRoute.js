@@ -23,6 +23,12 @@ router.post("/register", registerAdmin);
 // Admin Login Form Submission Route
 router.post("/login", loginAdmin);
 
+// Admin Logout
+router.post("/logout", (req, res) => {
+  res.clearCookie("token"); // Clear the JWT token from cookies
+  res.status(200).json({ message: "Logout successful" });
+});
+
 // Get Admin Details by ID
 // router.get("/:id", adminController.getAdminDetails);
 
