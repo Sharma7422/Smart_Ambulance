@@ -90,6 +90,10 @@ h1 {
     padding: 20px;
 }
 
+.stats-container a{
+    text-decoration: none;
+}
+
 /* Stat Card Styling */
 .stat-box {
     height: 150px;

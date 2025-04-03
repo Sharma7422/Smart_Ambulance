@@ -135,55 +135,57 @@
   </form>
 
 </div>
-
 <script>
- document.querySelector("form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const longitude = position.coords.longitude;
-      const latitude = position.coords.latitude;
-
-      const data = {
-        userName: document.getElementById("userName").value,
-        userPhone: document.getElementById("userPhone").value,
-        ambulanceType: document.getElementById("ambulanceType").value,
-        hospitalName: document.getElementById("hospitalName").value,
-        pickupAddress: document.getElementById("pickupAddress").value,
-        destinationAddress: document.getElementById("destinationAddress").value,
-        longitude,
-        latitude
-      };
-
-      try {
-        const response = await fetch("/book-ambulance", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-
-        // ✅ Ensure response is JSON
-        const result = await response.json();
-
-        if (response.ok && result.redirectUrl) {
-          window.location.href = result.redirectUrl;
-        } else {
-          console.error("❌ Error:", result.message);
+  document.querySelector("form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+  
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const longitude = position.coords.longitude;
+        const latitude = position.coords.latitude;
+  
+        const data = {
+          userName: document.getElementById("userName").value,
+          userPhone: document.getElementById("userPhone").value,
+          ambulanceType: document.getElementById("ambulanceType").value,
+          hospitalName: document.getElementById("hospitalName").value,
+          pickupAddress: document.getElementById("pickupAddress").value,
+          destinationAddress: document.getElementById("destinationAddress").value,
+          longitude,
+          latitude
+        };
+  
+        try {
+          const response = await fetch("/book-ambulance", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+  
+          const result = await response.json();
+  
+          if (response.ok && result.redirectUrl) {
+            // ✅ Show success pop-up
+            alert("🚑 Ambulance Booked Successfully!\nYou will receive an SMS confirmation.");
+            window.location.href = result.redirectUrl; // Redirect after success
+          } else {
+            // ❌ Show error pop-up
+            alert("❌ Error: " + (result.message || "Something went wrong!"));
+          }
+        } catch (error) {
+          alert("❌ Network Error: Please try again later.");
+          console.error("❌ Fetch error:", error);
         }
-      } catch (error) {
-        console.error("❌ Fetch error:", error);
-      }
-    }, (error) => {
-      console.error("❌ Location access denied:", error);
-    });
-  } else {
-    console.error("❌ Geolocation is not supported by this browser.");
-  }
-});
-
-
-</script>
-
+      }, (error) => {
+        alert("❌ Location access denied. Please enable location services.");
+        console.error("❌ Location access denied:", error);
+      });
+    } else {
+      alert("❌ Geolocation is not supported by this browser.");
+      console.error("❌ Geolocation is not supported.");
+    }
+  });
+  </script>
+  
 
 </body>

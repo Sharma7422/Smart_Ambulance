@@ -1,6 +1,5 @@
-const Hospital = require("../models/Hospital");
+const Hospital = require("../models/Hospital"); // Ensure correct path
 
-// Register a new hospital
 exports.registerHospital = async (req, res) => {
     try {
         const {
@@ -15,12 +14,18 @@ exports.registerHospital = async (req, res) => {
             emergencyContact
         } = req.body;
 
-        // Validate required fields
+        // ✅ Validate required fields
         if (!hospitalName || !hospitalAddress || !hospitalPhone || !hospitalEmail || !numDrivers || !numAmbulances || !numDoctors || !emergencyContact) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Create a new hospital entry
+        // ✅ Check for duplicate email before inserting
+        const existingHospital = await Hospital.findOne({ hospitalEmail });
+        if (existingHospital) {
+            return res.status(400).json({ message: "Hospital with this email already exists!" });
+        }
+
+        // ✅ Save hospital details in the database
         const newHospital = new Hospital({
             hospitalName,
             hospitalAddress,
@@ -34,12 +39,16 @@ exports.registerHospital = async (req, res) => {
         });
 
         await newHospital.save();
-        res.redirect("/admin/hospitals");  // ✅ Ensure this is the correct redirect path
+
+        // ✅ Send JSON success response instead of redirecting
+        res.status(201).json({ message: "Hospital registered successfully!" });
+
     } catch (error) {
         console.error("Error registering hospital:", error);
         res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 };
+
 
 // Fetch all registered hospitals
 exports.getHospitals = async (req, res) => {

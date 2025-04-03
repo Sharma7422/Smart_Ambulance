@@ -13,10 +13,11 @@
         <h2>ADMIN NAVBAR</h2>
         <ul>
             <li><a href="/admin/dashboard">🏠 Dashboard</a></li>
-            <li><a href="/admin/users">👤 Users</a></li>
+            <li><a href="/admin/users">👤 Patient</a></li>
             <li><a href="/admin/ambulances">🚑 Ambulances</a></li>
             <li><a href="/admin/ambulance-requests">📋 Requests</a></li>
             <li><a href="/admin/hospitals">🏥 Hospitals</a></li>
+            <li><a href="/admin/doctors">🏥 Doctors</a></li>
             <li><a href="/admin/drivers">👨‍✈️ Drivers</a></li>
             <button onclick="logoutAdmin()" class="logout-btn">🚪 Logout</button>
         </ul>
@@ -26,15 +27,21 @@
     <div class="main-content">
         <h1>Admin Dashboard</h1>
         <div class="stats-container">
-            <div class="stat-box stat-total">Total Ambulances <p><%= totalAmbulances %></p></div>
-            <div class="stat-box stat-requests">All Requests <p><%= totalRequests %></p></div>
-            <div class="stat-box stat-new">New Requests <p><%= newRequests %></p></div>
-            <div class="stat-box stat-assigned">Assigned Requests <p><%= assignedRequests %></p></div>
-            <div class="stat-box stat-onway">On The Way <p><%= onTheWayAmbulances %></p></div>
-            <div class="stat-box stat-picked">Patient Picked <p><%= patientPicked %></p></div>
-            <div class="stat-box stat-reached">Patient Reached <p><%= patientReached %></p></div>
-            <div class="stat-box stat-rejected">Rejected Requests <p><%= rejectedRequests %></p></div>
-        </div>
+            <a href="/admin/users"><div class="stat-box stat-total">Total Patient <p><%= totalUser %></p></div></a>
+            <a href="/admin/ambulances"><div class="stat-box stat-rejected">Total Ambulances <p><%= totalAmbulances %></p></div></a>
+            <a href="/admin/ambulance-requests"><div class="stat-box stat-requests">All Requests <p><%= totalRequests %></p></div></a>
+            <a href="/admin/ambulance-requests"><div class="stat-box stat-new">New Requests <p><%= newRequests %></p></div></a>
+            <a href="#"><div class="stat-box stat-assigned">Assigned Requests <p><%= assignedRequests %></p></div></a>
+            <a href="/admin/hospitals"><div class="stat-box stat-reached">Total Hospitals <p><%= totalHospital %></p></div></a>
+            <a href="/admin/drivers"><div class="stat-box stat-rejected">Total Driver <p><%= totalDriver %></p></div></a>
+            <a href="/admin/doctors"><div class="stat-box stat-total">Total Doctors <p><%= totalDoctor %></p></div></a>
+            <a href="#"><div class="stat-box stat-picked">On The Way <p><%= onTheWayAmbulances %></p></div></a>
+            <a href="#"><div class="stat-box stat-onway">Patient Picked <p><%= patientPicked %></p></div></a>
+            <a href="#"><div class="stat-box stat-reached">Patient Reached <p><%= patientReached %></p></div></a>
+            <a href="#"><div class="stat-box stat-rejected">Rejected Requests <p><%= rejectedRequests %></p></div></a>
+            
+            
+         </div>
     </div>
 
     <script>

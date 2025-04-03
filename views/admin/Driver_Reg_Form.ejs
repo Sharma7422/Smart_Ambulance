@@ -131,5 +131,37 @@
             <button type="submit" class="btn-primary">Register Driver</button>
         </form>
         
+        <!-- <script>
+            document.querySelector("form").addEventListener("submit", async (event) => {
+              event.preventDefault();
+            
+              const form = event.target;
+              const formData = new FormData(form);
+              const data = Object.fromEntries(formData.entries());
+            
+              try {
+                const response = await fetch("/admin/register-driver", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(data),
+                });
+            
+                const result = await response.json();
+            
+                if (response.ok) {
+                  // ✅ Success pop-up alert
+                  alert("🚖 Driver Registered Successfully!");
+                  form.reset(); // ✅ Reset form after successful submission
+                } else {
+                  // ❌ Error pop-up alert
+                  alert("❌ Error: " + (result.message || "Something went wrong!"));
+                }
+              } catch (error) {
+                alert("❌ Network Error: Please try again later.");
+                console.error("❌ Fetch error:", error);
+              }
+            });
+            </script>
+             -->
     </div>
 </body>

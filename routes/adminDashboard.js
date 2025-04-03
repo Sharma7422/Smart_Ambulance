@@ -5,6 +5,7 @@ const User = require("../models/User");
 const Driver = require("../models/Driver");
 const Hospital = require("../models/Hospital");
 const Booking = require("../models/Booking");
+const Doctor = require("../models/Doctor");
 
 // Import hospital controller functions
 const { registerHospital, getHospitals, getHospitalById } = require("../controllers/hospitalController");
@@ -33,6 +34,10 @@ router.get("/dashboard", requireAuth,async (req, res) => {
         const patientReached = await Booking.countDocuments({ status: "Reached" });
         const rejectedRequests = await Booking.countDocuments({ status: "Rejected" });
         const newRequests = await Booking.countDocuments({ status: "New" });
+        const totalDoctor = await Doctor.countDocuments();
+        const totalUser = await User.countDocuments();
+        const totalHospital = await Hospital.countDocuments();
+        const totalDriver =  await Driver.countDocuments();
 
         res.render("admin/dashboard", {
             totalAmbulances,
@@ -42,7 +47,11 @@ router.get("/dashboard", requireAuth,async (req, res) => {
             patientPicked,
             patientReached,
             rejectedRequests,
-            newRequests
+            newRequests,
+            totalDoctor,
+            totalUser,
+            totalHospital,
+            totalDriver
         });
     } catch (error) {
         res.status(500).send("Error loading dashboard");
@@ -105,6 +114,21 @@ router.get("/hospitals", async (req, res) => {
         res.status(500).send("Error fetching hospitals");
     }
 });
+
+
+router.get("/doctors", async (req, res) => {
+    try {
+        const doctors = await Doctor.find();
+        
+        // ✅ Render the list of doctors, not the registration form
+        res.render("admin/doctor", { doctors }); 
+    } catch (error) {
+        res.status(500).send("Error fetching doctors");
+    }
+});
+
+
+
 
 // ------------------------ HOSPITAL MANAGEMENT ------------------------ //
 

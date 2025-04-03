@@ -1,0 +1,46 @@
+<!-- views/admin/doctor_details.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Details</title>
+    <link rel="stylesheet" href="/CSS/admin_hospital.css"> <!-- Add CSS file if needed -->
+</head>
+<body>
+    <h2>Doctors List</h2>
+    <a href="/api/doctors/register-doctor" class="btn btn-primary">Add New Doctor</a>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Doctor Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Specialization</th>
+                <th>Experience</th>
+                <th>Availability</th>
+                <!-- <th>Action</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <% doctors.forEach((doctor, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= doctor.doctorName %></td>
+                    <td><%= doctor.doctorEmail %></td>
+                    <td><%= doctor.doctorPhone %></td>
+                    <td><%= doctor.specialization %></td>
+                    <td><%= doctor.experience %> years</td>
+                    <td><%= doctor.availability %></td>
+                    <!-- <td>
+                        <a href="/admin/delete-doctor/<%= doctor._id %>" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td> -->
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    
+</body>
+</html>

@@ -14,6 +14,7 @@ if (!fs.existsSync("./uploads")) {
 }
 const methodOverride = require('method-override');
 const cookieParser = require("cookie-parser");
+const { Vonage } = require("@vonage/server-sdk");
 // const path = require("path");
 
 // const { twilioPhoneNumber, accountSid, authToken } = require('./config/twilio'); // Twilio credentials
@@ -45,6 +46,11 @@ mongoose.connect(MONGO_URL, {
   });
 
 
+
+  
+  
+  
+
 // Middleware Setup
 app.use(cors());
 app.use(cookieParser()); 
@@ -69,7 +75,7 @@ const PORT = process.env.PORT || 3456;
 // app.use("/users", userRoute);  // User related routes
 app.use("/api/users", userRoute); // API for bookings
 app.use("/api", driverRoute); // Driver related routes
-app.use("/api", bookingRoutes);;  // Booking related routes
+app.use("/api", bookingRoutes);  // Booking related routes
 app.use("/admin", adminRoute);  // Admin related routes
 app.use("/api/doctors", doctorRoutes); //Doctor related route
 app.use("/api", hospitalRoute); //Hospital related route
@@ -150,6 +156,15 @@ app.get("/contact",(req,res)=>{
 app.get("/book-ambulance", (req, res) => res.render("services/Booking_Form.ejs"));
 
 
+const VONAGE_API_KEY = "82380d1b"; // Replace with your Vonage API Key
+  const VONAGE_API_SECRET = "RbUfl5hpeBR3k5Zr"; // Replace with your Vonage API Secret
+  const VONAGE_SENDER_ID = "Vonage APIs"; // Sender ID (can be any name)
+  
+  const vonage = new Vonage({
+    apiKey: VONAGE_API_KEY,
+    apiSecret: VONAGE_API_SECRET,
+  });
+
 // Route to handle ambulance booking form submission
 app.post("/book-ambulance", async (req, res) => {
   try {
@@ -170,6 +185,28 @@ app.post("/book-ambulance", async (req, res) => {
 
     await newUser.save();
 
+    // ✅ Ensure phone number is in correct format with country code
+    const formattedPhone = formatIndianPhoneNumber(userPhone);
+
+    // ✅ SMS Message Format
+    const messageBody = `🚑 Ambulance Booked! 🚑\n\nName: ${userName}\nType: ${ambulanceType}\nHospital: ${hospitalName}\nPickup: ${pickupAddress}\nDestination: ${destinationAddress}`;
+
+    // ✅ Send SMS using Vonage
+    vonage.sms.send({
+      to: formattedPhone,
+      from: VONAGE_SENDER_ID,
+      text: messageBody,
+    })
+      .then((resp) => {
+        console.log('Message sent successfully');
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.log('There was an error sending the messages.');
+        console.error(err);
+      });
+
+
     // ✅ Return JSON response instead of redirecting
     res.json({ success: true, redirectUrl: "/ambulance" });
   } catch (err) {
@@ -178,7 +215,14 @@ app.post("/book-ambulance", async (req, res) => {
   }
 });
 
-
+// ✅ Format phone number to include the Indian country code (+91)
+function formatIndianPhoneNumber(phone) {
+  phone = phone.trim();
+  if (!phone.startsWith("91")) {
+    phone = "91" + phone; // Ensure country code is added
+  }
+  return phone;
+}
 
 // app.post("/book-ambulance", upload.none(), async (req, res) => {
 //   const { userName, userPhone, ambulanceType, hospitalName, pickupAddress, destinationAddress } = req.body;
@@ -231,4 +275,5 @@ app.listen(PORT, () => {
 });
 
 
-// Rahul Sharma
+// Smart Ambulance Services Project 
+// Submission Date is :- 3-April-2025

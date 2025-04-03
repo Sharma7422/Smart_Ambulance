@@ -169,5 +169,42 @@
         </form>
     </div>
 
+    <script>
+        document.querySelector("form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // ✅ Convert checkbox values into an array
+    data.ambulanceTypes = formData.getAll("ambulanceTypes[]");
+
+    try {
+        const response = await fetch("/admin/register-hospital", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("🏥 " + result.message); // ✅ Show success message
+            form.reset(); // ✅ Reset form after success
+            window.location.href = "/admin/hospitals"; // ✅ Redirect after success
+        } else {
+            alert("❌ " + result.message); // ✅ Show error message
+        }
+
+    } catch (error) {
+        console.error("Request failed:", error);
+        alert("❌ Internal Server Error. Please try again!");
+    }
+});
+
+        </script>
+        
+
 </body>
 </html>

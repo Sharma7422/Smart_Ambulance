@@ -1,10 +1,17 @@
-const User = require("../models/User");
+// const User = require("../models/User");
 const axios = require("axios");
+const User = require("../models/User");
+const { Vonage } = require("@vonage/server-sdk");
 
-// Fast2SMS API Configuration
-const FAST2SMS_API_KEY = "YJDBzmhAXt923QI0FHqP5ycSjrOiUna18ZW76MNRlwbeoGEpfve3h2GwdFm6OtDnu9BC5WJNPogLiXpA"; // Replace with your actual API key
+const VONAGE_API_KEY = "82380d1b"; // Replace with your Vonage API Key
+const VONAGE_API_SECRET = "RbUfl5hpeBR3k5Zr"; // Replace with your Vonage API Secret
+const VONAGE_SENDER_ID = "Vonage APIs"; // Sender ID (can be any name)
 
-// Create a new user and send an SMS notification
+const vonage = new Vonage({
+  apiKey: VONAGE_API_KEY,
+  apiSecret: VONAGE_API_SECRET,
+});
+
 exports.createUser = async (req, res) => {
   const { userName, userPhone, ambulanceType, hospitalName, pickupAddress, destinationAddress } = req.body;
 
@@ -16,40 +23,56 @@ exports.createUser = async (req, res) => {
     const newUser = new User({ userName, userPhone, ambulanceType, hospitalName, pickupAddress, destinationAddress });
     await newUser.save();
 
-    // Send SMS notification using Fast2SMS
-    const messageBody = `Ambulance booked!\nName: ${userName}\nType: ${ambulanceType}\nHospital: ${hospitalName}\nPickup: ${pickupAddress}\nDestination: ${destinationAddress}`;
-    await sendSMS(userPhone, messageBody);
+    // ✅ Ensure phone number is in correct format with country code
+    const formattedPhone = formatIndianPhoneNumber(userPhone);
 
-    // ✅ Return JSON response with redirect URL
-    res.json({ redirectUrl: "/ambulance" });
+    // ✅ SMS Message Format
+    const messageBody = `🚑 Ambulance Booked! 🚑\n\nName: ${userName}\nType: ${ambulanceType}\nHospital: ${hospitalName}\nPickup: ${pickupAddress}\nDestination: ${destinationAddress}`;
+
+    // ✅ Send SMS using Vonage
+    vonage.sms.send({
+      to: formattedPhone,
+      from: VONAGE_SENDER_ID,
+      text: 'A text message sent using the Vonage SMS API',
+    })
+      .then((resp) => {
+        console.log('Message sent successfully');
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.log('There was an error sending the messages.');
+        console.error(err);
+      });
+
+    res.json({ success: true, redirectUrl: "/ambulance" });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-
-// SMS sending function
-async function sendSMS(phone, message) {
-  try {
-    const response = await axios.post("https://www.fast2sms.com/dev/bulkV2", {
-      route: "v3",
-      sender_id: "TXTIND",
-      message: message,
-      language: "english",
-      numbers: phone,
-    }, {
-      headers: {
-        "authorization": FAST2SMS_API_KEY,
-        "Content-Type": "application/json"
-      }
-    });
-
-    console.log("Fast2SMS Response:", response.data);
-  } catch (error) {
-    console.error("Error sending SMS:", error.response ? error.response.data : error.message);
+// ✅ Format phone number to include the Indian country code (+91)
+function formatIndianPhoneNumber(phone) {
+  phone = phone.trim();
+  if (!phone.startsWith("91")) {
+    phone = "91" + phone; // Ensure country code is added
   }
+  return phone;
 }
 
+// ✅ SMS Sending Function using Vonage
+// async function sendSMS(to, text) {
+//   try {
+//     const response = await vonage.sms.send({
+//       to: to,
+//       from: VONAGE_SENDER_ID,
+//       text: text,
+//     });
+
+//     console.log("SMS Sent Successfully:", response);
+//   } catch (error) {
+//     console.error("Error sending SMS:", error);
+//   }
+// }
 
 // Get all users (View Users)
 exports.getAllUsers = async (req, res) => {
